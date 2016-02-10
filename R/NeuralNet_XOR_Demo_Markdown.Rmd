@@ -1,0 +1,52 @@
+---
+title: "XOR Neural Net Demo"
+author: "Eddie Pantridge"
+date: "Wednesday, February 10, 2016"
+output: pdf_document
+---
+
+This is an example of how to create a simple neural network 
+that will learn to comput XOR useing the neuralnet package.
+
+First, lets get the library.
+```{r}
+library(neuralnet)
+```
+
+Next, lets create all the pattern for XOR.
+```{r}
+input_a <- c(0, 1, 0, 1)
+input_b <- c(0, 0, 1, 1)
+XORoutput  <- c(0, 1, 1, 0)
+XORdata <- data.frame(input_a, input_b, XORoutput)
+
+XORdata
+```
+
+We then must then   get the names of the input and output values from the datafram
+```{r}
+n <- names(XORdata)
+n
+```
+
+Create, and train the neural network. Uses backpropagation.
+Arguments:
+- hidden = a vector of integers, each element gives the number of nodes in a hidden layer.
+- linear.output = If TRUE, regression. If FALSE, classification.
+- act.fct = Transfer function.
+- stepmax = Max number of epochs to train.
+```{r}
+nn <- neuralnet(XORoutput~input_a+input_b, data=XORdata, hidden=c(3), linear.output=FALSE, act.fct="tanh", stepmax=1000)
+```
+
+The neuralnet package lets us make a plot of the network.
+It shows the topoloy, bias and even weights!
+```{r}
+plot(nn)
+```
+
+Lets check each XOR pattern's output!
+```{r}
+compute(nn,XORdata[1:2])
+```
+
